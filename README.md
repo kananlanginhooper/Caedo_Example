@@ -12,7 +12,7 @@ Many people out there may be asking "why?". Why would you create a new framework
 
 The main reason is that I didn't find a framework that fit my needs.  I needed a framework that was simple and fast to get running, but could be expanded to meet the needs of a complex project.
 
-My goal for Caedo is that someone who knows php, should be able to launch a working site using Caedo in 15 minutes.  They should start by finishing reading this page!
+My goal for Caedo is enable php developers to launch a working site in 15 minutes.  The clock starts now, and you should start by finishing reading this page!
 
 # Basics - Rendering Pages
 
