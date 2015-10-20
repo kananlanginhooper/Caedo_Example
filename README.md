@@ -37,18 +37,18 @@ This is the file that contains the page's actual content.  It also has a small a
 
 It is also important to note, that page files are located in the folder that you would guess they would be in based on URL -- meaning there is no fancy re-writing or apache magic happening to make the framework work.
 
-In this example project, there is a '/Basics' folder, it contains a file called index.php.  It is executed by opening (http:localhost)/Basics/index.php
+In this example project, there is a '/Test' folder, it contains a file 'index.php'.  It is executed by opening (http:localhost)/Test/index.php
 
-_The Page class must be named the same as the file name_  So for the file index.php, the class must be named 'index'. 
+_The Page class must be named the same as the file name_  So for the file 'index.php', the class must be named 'index'. 
 
-Here is what the index.php file could look like:
+Here is what the index.php file could (and does) look like:
 
 ```
 <?php
 
 require_once "../__CAEDO.php";
 
-class index extends PageTemplate {
+class index extends BasePage {
 	
 }
 
@@ -59,23 +59,22 @@ $ThisPage = new index();
 Although this page doesn't do anything, or display anything. It is a legal page file.
 
 
-# Basics - Hello World
+# Hello World
 
 This file is included in the root of the example project as HelloWorld.php
 
 ```
 <?php
 
-require_once "__CAEDO.php";
+require_once "__CAEDO.inc";
 
-class HelloWorld extends PageTemplate {
+class HelloWorld extends BasePage {
 
 	protected function BODY(){
-		parent::BODY();
 		?>
-		
-		<h1>Hello World!!!</h1>
-		
+
+			<h1>Hello World!!!</h1>
+
 		<?
 	}
 }
@@ -84,22 +83,29 @@ $ThisPage = new HelloWorld();
 
 ```
 
-# Basics - Hello World - Using Base Page
+# Hello World 01 - Using Constructor and showing the change of the page class name 
 
 This file is included in the root of the example project as HelloWorld_01.php
 
 ```
-<?
+<?php
 
-require_once "__CAEDO.php";
+require_once "__CAEDO.inc";
 
 class HelloWorld_01 extends BasePage {
+
+	public function __construct(){
+		parent::__construct();
+	}
 
 	protected function BODY(){
 		parent::BODY();
 		?>
-		
+
 		<h1>Hello World!!!</h1>
+		
+		<p>This is the first Hello World example with the addition of this message and using a public constructor, __construct().</p>
+		<p>Also notice that the classname has been changed to 'HelloWorld_01' to match the filename of 'HelloWorld_01.php'.<br />If you leave the class name as HelloWorld, you will get an error message at the top of your screen saying "Classname doesn't match file name".<br />I am also calling 'parent::BODY()' in the top of the BODY() function.  This is a good habit to get into, as when you start using page template, that's where the header code will usually be.</p>
 		
 		<?
 	}
@@ -107,29 +113,54 @@ class HelloWorld_01 extends BasePage {
 
 $ThisPage = new HelloWorld_01();
 
-```
-
-
-# Basics - Hello World
 
 ```
-<?
 
-require_once "../__CAEDO.php";
+# Hello World 02 - Using Constructor for MVC routing and changing to print statements for text
 
-class index extends PageTemplate {
+```
+<?php
+
+require_once "__CAEDO.inc";
+
+class HelloWorld_02 extends BasePage {
+
+	public function __construct(){
+		parent::__construct();
+		
+		// this is what we're using for the model section of the MVC framework.
+		
+		if(isset($_GET['AltView'])) {
+			$this->__SelectAlternateView('SecondHelloWorldView');
+		}
+	
+	}
 
 	protected function BODY(){
 		parent::BODY();
-		?>
 		
-		<h1>Hello World!!!</h1>
+		print "<h1>Hello World 02!!!</h1>";
 		
-		<?
+		print "<p>This version is using constructor for MVC routing and changing to print statements for text</p>";
+		print "<p>BODY() is the default view.  It is not required, but it is called unless the view is overridden. </p>";
+		
+		print "<p>The view can be overridden by calling the '__SelectAlternateView' function.  View functions on the page class must always start with 'BODY__'.  This makes it really clear when looking at a page file which functions are views.</p>";
+		print "<p>The view name I'd like to use is 'SecondHelloWorldView', which means I call the function '\$this->__SelectAlternateView('SecondHelloWorldView');', which will then call the function 'BODY__SecondHelloWorldView()' in my page file.</p>";
+		print "<p><a href='?AltView=true'>See the second view</a></p>";
+	
+	}
+
+	protected function BODY__SecondHelloWorldView(){
+		parent::BODY();
+		
+		print "<h1>Welcome, to the second view.</h1>";
+		
+		print "<p><a href='?'>I'm done here, take me to the first view!</a></p>";
+	
 	}
 }
 
-$ThisPage = new index();
+$ThisPage = new HelloWorld_02();
 
 ```
 
