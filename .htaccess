@@ -1,0 +1,80 @@
+#AddHandler x-httpd-php5 .php
+#AddHandler x-httpd-php .php4
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+
+
+<Files ~ "\.(inc|sql)$">
+   order allow,deny
+   deny from all
+</Files>
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+
+# Enable after we get the CDN SSL up
+# RewriteCond %{HTTP_HOST} ^www\.FloorMechanics\.com$ [NC]
+# RewriteRule ^(.*)$ https://FloorMechanics.com/$1 [R=301,L]
+
+# RewriteCond %{HTTP_HOST} ^FloorMechanics\.com$ [NC]
+# RewriteRule ^(.*)$ https://FloorMechanics.com/$1 [R=301,L]
+
+############################ Force SSL ############################
+RewriteCond %{HTTP_HOST} !^localhost$
+RewriteCond %{HTTP_HOST} !^core\.distribugistics\.com$
+RewriteCond %{HTTP_HOST} !^core-vpc\.distribugistics\.com$
+RewriteCond %{HTTP_HOST} !^base\.distribugistics\.com$
+RewriteCond %{HTTP_HOST} !^floormechanics\.com$
+RewriteCond %{HTTP_HOST} !^(.+)\.floormechanics\.com$
+RewriteCond %{HTTP_HOST} !^(.+)\.amazonaws\.com$
+RewriteCond %{HTTP_HOST} !^(.+)\.elasticbeanstalk\.com$
+RewriteCond %{HTTP:X-Forwarded-Proto} =http
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# RewriteCond %{REQUEST_FILENAME} !HealthCheck.php
+############################ Force SSL ############################
+
+RewriteCond %{QUERY_STRING} ^(.+)&PHPSESSID=[0-9a-z]+$|^PHPSESSID=[0-9a-z]+&?(.*)$ [NC]
+RewriteRule (.*) /$1?%1 [R=301,L]
+
+RewriteRule ^vsadmin - [L,NC]
+
+#RewriteCond %{REQUEST_URI} ^/(.+)\(\(.+\.php
+#RewriteRule ^(.+)\(\((.+).php$ /categoriesstatic.php?cat=$2&name=$1 [QSA]
+RewriteRule ^(.+)\(\((.+).php$ /Categories/$1/$2 [QSA,R=301]
+
+#RewriteCond %{REQUEST_URI} ^/(.+)\)\).+\.php
+#RewriteRule ^(.+)\)\)(.+).php$ /productsstatic.php?cat=$2&name=$1 [QSA]
+RewriteRule ^(.+)\)\)(.+).php$ /Products/$1/$2 [QSA,R=301]
+
+#RewriteRule ^(.[^-]*)-(.*).php$ /proddetailstatic.php?prod=$2&name=$1
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.[^-]*)-(.*).php$ /ProductDetail/$1/$2 [QSA,R=301]
+
+RewriteRule ^youtube/(.*)$ http://www.youtube.com/$1 [L]
+
+
+RewriteRule ^(Categories|Products|ProductDetail)/(.*)$ /CatProdDetail.php [PT,QSA]
+# RewriteRule ^index.php$ /CatProdDetail.php [PT,QSA]
+RewriteRule ^(Cart)/(.*)$ /ShoppingCart.php [PT,QSA]
+
+
+
+ErrorDocument 404 /404.php
+
+php_value short_open_tag 1
+
+php_value max_input_vars 5000
