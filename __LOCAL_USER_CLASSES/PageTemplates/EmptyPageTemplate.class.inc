@@ -1,0 +1,5 @@
+<?
+
+class EmptyPageTemplate extends BasePage {
+
+}
