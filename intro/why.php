@@ -1,4 +1,4 @@
-<?
+<?php
 
 // show all errors
 $__ShowErrors = 'ALL';
@@ -48,7 +48,7 @@ The main reason is that I didn't find a framework that fit my needs.  There are 
 
 
 
-<?
+<?php
 	
 	}
 }

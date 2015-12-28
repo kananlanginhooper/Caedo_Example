@@ -28,7 +28,7 @@ class HelloWorld_01 extends BasePage {
 <p>
 	<a href='HelloWorld_02.php'>Continue to Example 02</a>
 </p>
-<?
+<?php
 	}
 }
 

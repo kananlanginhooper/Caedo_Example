@@ -1,4 +1,4 @@
-<?
+<?php
 
 class HelloWorldPageTemplate1 extends BasePage {
 	

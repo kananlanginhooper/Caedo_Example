@@ -1,4 +1,4 @@
-<?
+<?php
 
 class HelloWorldPageTemplate3 extends HelloWorldPageTemplate2 {
 
@@ -141,7 +141,7 @@ li {
 	left: 310px;
 }
 </style>
-<?
+<?php
 	}
 
 	public function __destruct(){
@@ -191,7 +191,7 @@ li {
 			</tr>
 		</table>
 	
-	<?
+	<?php
 	
 	}
 
@@ -203,7 +203,7 @@ li {
 	<!-- end: main -->
 </div>
 <!-- end: main container -->
-<?
+<?php
 	}
 
 }

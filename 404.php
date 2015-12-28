@@ -1,4 +1,4 @@
-<?
+<?php
 
 // show all errors
 $__ShowErrors = 'ALL';
@@ -35,14 +35,14 @@ class index extends DefaultPageTemplate {
 		parent::HEAD();
 		?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<?
+<?php
 	}
 
 	protected function BODY(){
 		parent::BODY();
 		?>
 <h1>Page not found</h1>
-<?
+<?php
 	}
 }
 
