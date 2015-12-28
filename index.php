@@ -1,4 +1,4 @@
-<?
+<?php
 
 // show all errors
 $__ShowErrors = 'ALL';
@@ -35,7 +35,7 @@ class index extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 		?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<?
+<?php
 	}
 
 	protected function addDoubleSpaces($str){

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class FrameworkAdminTemplate extends DefaultPageTemplate {
 
@@ -142,7 +142,7 @@ li {
 	left: 260px;
 }
 </style>
-<?
+<?php
 	}
 
 	public function __destruct(){
@@ -181,7 +181,7 @@ li {
 	</ul>
 	<div id='main'>
 
-<?
+<?php
 	}
 
 	protected function FOOTER(){
@@ -192,7 +192,7 @@ li {
 	<!-- end: main -->
 </div>
 <!-- end: main container -->
-<?
+<?php
 	}
 
 }

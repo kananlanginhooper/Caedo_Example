@@ -1,4 +1,4 @@
-<?
+<?php
 
 class DefaultPageTemplate extends BasePage {
 
@@ -181,7 +181,7 @@ div#Page {
 </style>
 
 <!-- <link rel="stylesheet" href="/__local/js/jqwidget/jqwidgets/styles/jqx.base.css" type="text/css" /> -->
-<?
+<?php
 	}
 
 	public function __destruct(){
@@ -201,7 +201,7 @@ div#Page {
 
 	<div id='main'>
 
-                <?
+                <?php
 	}
 
 	protected function FOOTER(){
@@ -214,7 +214,7 @@ div#Page {
 	<!-- end: main -->
 </div>
 <!-- end: main container -->
-<?
+<?php
 	}
 
 }

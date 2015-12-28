@@ -1,4 +1,4 @@
-<?
+<?php
 
 // changed to be totally static, constuctor is not needed
 // $DBConnections = new clsDatabaseConnections();

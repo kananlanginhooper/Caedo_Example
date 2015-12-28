@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once "../__CAEDO.php";
 
@@ -35,7 +35,7 @@ main classes involved in rendering this page.
 </ol>
 Each class inherits from the class below it, and can add information.  It is best to keep the most informaion in the Page Template to make the Page class file as small and simple as posible.  There is very little other code in the page class file other than this text.  In fact, this file is only 43 lines long, and all but 10 of those lines are text.
 
-<?
+<?php
 	}
 }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 
@@ -36,7 +36,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-<?
+<?php
 	}
 
 	public function __destruct(){
@@ -66,7 +66,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 	<!-- Page Content -->
 	<div id="page-content-wrapper">
 		<div class="container-fluid">
-                        <?
+                        <?php
 	}
 
 	protected function FOOTER(){
@@ -95,7 +95,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 <?php } ?>
 <!-- end: main container -->
 </div>
-<?
+<?php
 	}
 
 }

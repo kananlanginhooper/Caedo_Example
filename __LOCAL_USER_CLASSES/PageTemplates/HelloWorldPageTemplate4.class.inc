@@ -1,4 +1,4 @@
-<?
+<?php
 
 class HelloWorldPageTemplate4 extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 	

@@ -1,4 +1,4 @@
-<?
+<?php
 
     class AJAXPageTemplate extends BasePage {
 
