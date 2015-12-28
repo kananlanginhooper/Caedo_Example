@@ -14,6 +14,10 @@ clsSiteConfigs::AddSiteConfig($SiteConfig);
 // clone for Example site
 $SiteConfig = clone $SiteConfig;
 $SiteConfig->Url = 'getcaedo.com';
+
+// disable these for the live site
+$SiteConfig->ShowErrors = false;
+$SiteConfig->ShowStats = false;
 clsSiteConfigs::AddSiteConfig($SiteConfig);
 
 // Second example site
