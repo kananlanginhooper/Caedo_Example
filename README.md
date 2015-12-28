@@ -2,6 +2,8 @@
 
 This is an example project using the Caedo PHP Framework.  If you are looking to use Cadeo, you are in the right place!
 
+All of the code here is also hosted on our example site.  You can check it our here: http://GetCaedo.com
+
 If you are looking to make changes to the Caedo PHP Framework, the source is located here: https://github.com/kananlanginhooper/Caedo
 
  

@@ -57,6 +57,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 			<li><a href="/HelloWorld.php" target="_blank">Hello World</a></li>
 			<li><a href="/HelloWorld_01.php">Hello World Learning Path</a></li>
 			<li><a href="/TopicPages/BasicVersion.php">Basic Version</a></li>
+			<li><a href="/TopicPages/Configuration.php">Site Configuration</a></li>
 			<li><a href="/TopicPages/Database.php">Database</a></li>
 		</ul>
 	</div>
@@ -75,11 +76,8 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12"
-			style='text-align: center; background-color: #989898; height: 72px;'>
-			<br /> Template Credit: <a
-				href='https://github.com/IronSummitMedia/startbootstrap-simple-sidebar'>
-				https://github.com/IronSummitMedia/startbootstrap-simple-sidebar</a>
+		<div class="col-lg-12" style='text-align: center; background-color: #989898; height: 72px;'>
+			<br /> Template Credit: <a href='https://github.com/IronSummitMedia/startbootstrap-simple-sidebar'> https://github.com/IronSummitMedia/startbootstrap-simple-sidebar</a>
 
 		</div>
 	</div>

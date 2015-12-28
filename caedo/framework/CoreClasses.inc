@@ -291,7 +291,7 @@ class BasePage {
 			if(strpos($tidy, $this->__TidyHTMLComment)) {
 				
 				$TidyMessage = $this->__ReturnHTMLErrorsForLocalhost($tidy->value);
-
+				
 				$PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $tidy->value);
 			}
 			else {
@@ -603,6 +603,7 @@ class clsDatabaseConnection {
 }
 
 class clsSiteConfigs {
+	public static $DefaultSite = false;
 	private static $arrSiteConfigs = array();
 
 	public static function AddSiteConfig(clsSiteConfig $clsSiteConfig){
@@ -618,7 +619,12 @@ class clsSiteConfigs {
 			return self::$arrSiteConfigs[$Url];
 		}
 		else {
-			return false;
+			if(self::$DefaultSite && isset(self::$arrSiteConfigs[self::$DefaultSite])) {
+				return self::$arrSiteConfigs[self::$DefaultSite];
+			}
+			else {
+				return false;
+			}
 		}
 	}
 
