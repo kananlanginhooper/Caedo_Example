@@ -4,7 +4,8 @@ This is an example project using the Caedo PHP Framework.  If you are looking to
 
 All of the code here is also hosted on our example site.  You can check it our here: http://GetCaedo.com
 
-If you are looking to make changes to the Caedo PHP Framework, the source is located here: https://github.com/kananlanginhooper/Caedo
+~~If you are looking to make changes to the Caedo PHP Framework, the source is located here: https://github.com/kananlanginhooper/Caedo~~
+Caedo PHP Framework is still in rapid development, for now please push changes to this repo.  I will review these push requests and then at some point in the future split out the "Framework" from the framework and examples that are in this repo.
 
  
  
