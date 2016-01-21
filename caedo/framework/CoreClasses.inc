@@ -274,29 +274,39 @@ class BasePage {
 		$PageHTML = $PageHEAD . $PageBODY . $PageEND;
 		
 		if(isset(Site::$TidyUp) && Site::$TidyUp) {
-			// Clean up the HTML
-			$tidy = new tidy();
-			$tidy_config = array(
-					'indent' => true,
-					'output-xhtml' => true,
-					'wrap' => 400,
-					'new-blocklevel-tags' => 'audio, source' 
-			);
 			
-			$tidy->parseString($PageHTML, $tidy_config, 'utf8');
-			$tidy->cleanRepair();
-			
-			// Get the Tidy Message, then change the page source that is now nicely formatted, and add the Tidy Message
-			
-			// check and see if there is a Replacement tag. If the tag is edited here or in a page class, it will be an issue.
-			if(strpos($tidy, $this->__TidyHTMLComment)) {
+			// check that Tidy extention is loaded
+			if(extension_loaded('tidy')) {
 				
-				$TidyMessage = $this->__ReturnHTMLErrorsForLocalhost($tidy->value);
+				// Clean up the HTML
+				$tidy = new tidy();
+				$tidy_config = array(
+						'indent' => true,
+						'output-xhtml' => true,
+						'wrap' => 400,
+						'new-blocklevel-tags' => 'audio, source' 
+				);
 				
-				$PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $tidy->value);
+				$tidy->parseString($PageHTML, $tidy_config, 'utf8');
+				$tidy->cleanRepair();
+				
+				// Get the Tidy Message, then change the page source that is now nicely formatted, and add the Tidy Message
+				$PageHTMLAfterTidy = $tidy->value;
 			}
 			else {
-				$PageHTML = $tidy->value;
+				// tidy not enabled
+				$PageHTMLAfterTidy = $PageHTML;
+			}
+			
+			// check and see if there is a Replacement tag. If the tag is edited here or in a page class, it will be an issue.
+			if(strpos($PageHTMLAfterTidy, $this->__TidyHTMLComment)) {
+				
+				$TidyMessage = $this->__ReturnHTMLErrorsForLocalhost($PageHTMLAfterTidy);
+				
+				$PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $PageHTMLAfterTidy);
+			}
+			else {
+				$PageHTML = $PageHTMLAfterTidy;
 			}
 			
 			// remove doctype if there is one
@@ -431,36 +441,42 @@ class BasePage {
 		}
 		
 		if($ShowErrors) {
-			$tidy = new tidy();
-			$tidy_config = array(
-					'indent' => true,
-					'output-xhtml' => true,
-					'wrap' => 400 
-			);
-			$tidy->parseString($html, $tidy_config, 'utf8');
-			$tidy->cleanRepair();
-			
-			$ErrorsToDisplay = array();
-			// strlen($tidy->errorBuffer)
-			
-			$ErrorBuffer = $tidy->errorBuffer;
-			$arrError = explode("\n", $ErrorBuffer);
-			
-			foreach($arrError as $Error) {
-				if(strpos($Error, 'Warning: <table> lacks "summary" attribute')) {
-					// don't export
+			if(extension_loaded('tidy')) {
+				$tidy = new tidy();
+				$tidy_config = array(
+						'indent' => true,
+						'output-xhtml' => true,
+						'wrap' => 400 
+				);
+				$tidy->parseString($html, $tidy_config, 'utf8');
+				$tidy->cleanRepair();
+				
+				$ErrorsToDisplay = array();
+				// strlen($tidy->errorBuffer)
+				
+				$ErrorBuffer = $tidy->errorBuffer;
+				$arrError = explode("\n", $ErrorBuffer);
+				
+				foreach($arrError as $Error) {
+					if(strpos($Error, 'Warning: <table> lacks "summary" attribute')) {
+						// don't export
+					}
+					else {
+						$ErrorsToDisplay[] = htmlspecialchars($Error) . "\n<br />";
+					}
 				}
-				else {
-					$ErrorsToDisplay[] = htmlspecialchars($Error) . "\n<br />";
+				
+				// xdebug_break();
+				if(count($ErrorsToDisplay)) {
+					$ret .= "\n\n<br />\n<br />\n";
+					$ret .= "<hr>";
+					$ret .= "There are errors on this page:<br />\n";
+					$ret .= implode($ErrorsToDisplay);
 				}
 			}
-			
-			// xdebug_break();
-			if(count($ErrorsToDisplay)) {
+			else {
 				$ret .= "\n\n<br />\n<br />\n";
-				$ret .= "<hr>";
-				$ret .= "There are errors on this page:<br />\n";
-				$ret .= implode($ErrorsToDisplay);
+				$ret .= 'Tidy was enabled, but not installed.  Please check you php.ini and phpinfo() function to see if the tidy extension is loaded.';
 			}
 		}
 		
