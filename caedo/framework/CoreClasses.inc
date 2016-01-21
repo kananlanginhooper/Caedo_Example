@@ -276,9 +276,9 @@ class BasePage {
 		if(isset(Site::$TidyUp) && Site::$TidyUp) {
 			// Clean up the HTML
 			if (!extension_loaded('tidy')) {
-					echo 'Please enable tidy to install Caedo Framework';
-					exit;
-			}
+					$PageHTML = $PageHTML.'Please enable tidy to install Caedo Framework';
+					 
+			}else{
 			$tidy = new tidy();
 			$tidy_config = array(
 					'indent' => true,
@@ -302,6 +302,8 @@ class BasePage {
 				$PageHTML = $tidy;
 			}
 			
+			
+			}
 			// OUTPUT
 			echo $this->__DOCTYPE(); // DOCTYPE is removed by tidy
 			echo $PageHTML; // This is the main print of all of the HTML code
