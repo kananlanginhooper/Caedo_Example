@@ -275,6 +275,10 @@ class BasePage {
 		
 		if(isset(Site::$TidyUp) && Site::$TidyUp) {
 			// Clean up the HTML
+			if (!extension_loaded('tidy')) {
+					echo 'Please enable tidy to install Caedo Framework';
+					exit;
+			}
 			$tidy = new tidy();
 			$tidy_config = array(
 					'indent' => true,
