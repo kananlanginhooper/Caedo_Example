@@ -279,7 +279,8 @@ class BasePage {
 			$tidy_config = array(
 					'indent' => true,
 					'output-xhtml' => true,
-					'wrap' => 400 
+					'wrap' => 400,
+					'new-blocklevel-tags' => 'audio, source' 
 			);
 			
 			$tidy->parseString($PageHTML, $tidy_config, 'utf8');
@@ -295,11 +296,18 @@ class BasePage {
 				$PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $tidy->value);
 			}
 			else {
-				$PageHTML = $tidy;
+				$PageHTML = $tidy->value;
 			}
 			
+			// remove doctype if there is one
+			$PageHTML = preg_replace("/<!DOCTYPE((.|\n|\r)*?)\">/", "", $PageHTML);
+			
+			// also remove HTML crap it can sometimes add
+			$PageHTML = preg_replace("/<html((.|\n|\r)*?)\">/", "", $PageHTML);
+			
 			// OUTPUT
-			echo $this->__DOCTYPE(); // DOCTYPE is removed by tidy
+			$this->__DOCTYPE(); // DOCTYPE is removed or messed up by tidy
+			echo "\n<html>\n";
 			echo $PageHTML; // This is the main print of all of the HTML code
 		}
 		else {
