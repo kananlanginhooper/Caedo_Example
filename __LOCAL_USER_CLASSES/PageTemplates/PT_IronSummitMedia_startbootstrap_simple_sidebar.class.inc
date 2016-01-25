@@ -27,6 +27,10 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 #TidyMessage {
 	background-color: #808080;
 }
+
+.min_height {
+	min-height: 500px;
+}
 -->
 </style>
 
@@ -59,6 +63,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 			<li><a href="/TopicPages/BasicVersion.php">Basic Version</a></li>
 			<li><a href="/TopicPages/Configuration.php">Site Configuration</a></li>
 			<li><a href="/TopicPages/Database.php">Database</a></li>
+			<li><a href="/TopicPages/Login.php">Login Demo</a></li>
 		</ul>
 	</div>
 	<!-- /#sidebar-wrapper -->
@@ -76,8 +81,11 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12" style='text-align: center; background-color: #989898; height: 72px;'>
-			<br /> Template Credit: <a href='https://github.com/IronSummitMedia/startbootstrap-simple-sidebar'> https://github.com/IronSummitMedia/startbootstrap-simple-sidebar</a>
+		<div class="col-lg-12"
+			style='text-align: center; background-color: #989898; height: 72px;'>
+			<br /> Template Credit: <a
+				href='https://github.com/IronSummitMedia/startbootstrap-simple-sidebar'>
+				https://github.com/IronSummitMedia/startbootstrap-simple-sidebar</a>
 
 		</div>
 	</div>
