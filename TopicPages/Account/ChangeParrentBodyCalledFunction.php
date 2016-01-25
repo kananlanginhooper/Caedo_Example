@@ -38,38 +38,7 @@ class ChangeParrentBodyCalledFunction extends PT_IronSummitMedia_startbootstrap_
 	<?php
 	}
 
-	protected function FOOTER(){
-		parent::FOOTER();
-		?>
-			    </div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-12"
-			style='text-align: center; background-color: #989898; height: 72px;'>
-			<br /> Template Credit: <a
-				href='https://github.com/IronSummitMedia/startbootstrap-simple-sidebar'>
-				https://github.com/IronSummitMedia/startbootstrap-simple-sidebar</a>
-
-		</div>
-	</div>
-
-	<!-- /#page-content-wrapper -->
-	<?php if($this->__TidyHTMLComment){?>
-		<div class="row">
-		<div class="col-lg-12">
-			<div id='TidyMessage'> 
-					<?php print $this->__TidyHTMLComment; ?>
-					</div>
-		</div>
-	</div>
 	
-	<?php } ?>
-	<!-- end: main container -->
-</div>
-<?php
-	}
-
 	protected function BODY(){
 		// would be "parret::BODY_REPLACEMENT();" if you were changing the page template to support
 		self::BODY_REPLACEMENT();
