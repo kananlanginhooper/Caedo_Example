@@ -1,9 +1,15 @@
 <?php
 
-class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
+class PT_IronSummitMedia_startbootstrap_simple_sidebar__WithSecurityClone extends BasePage {
 
 	public function __construct(){
 		parent::__construct(); // load all the parent classes first
+		                       
+		// this is the security code that we added
+		if(!isset($_SESSION['LoggedIn']) || $_SESSION['LoggedIn'] != 'admin') {
+			Redirect('../Login.php');
+		}
+		
 		$this->__JavaScript("//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.1.47/jquery.form-validator.min.js", false, true);
 	}
 
@@ -64,6 +70,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 			<li><a href="/TopicPages/Configuration.php">Site Configuration</a></li>
 			<li><a href="/TopicPages/Database.php">Database</a></li>
 			<li><a href="/TopicPages/Login.php">Login Demo</a></li>
+			<li><a href="/TopicPages/Logout.php">Logout</a></li>
 		</ul>
 	</div>
 	<!-- /#sidebar-wrapper -->

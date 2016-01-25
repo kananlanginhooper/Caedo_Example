@@ -33,6 +33,16 @@
     transition: all 0.5s ease;
 }
 
+#sidebar-wrapper-right {
+    z-index: 1000;
+    position: fixed;
+    text-align: right;
+    margin-right: -250px;
+    width: 0;
+    height: 100%;
+    background: #000;
+}
+
 #wrapper.toggled #sidebar-wrapper {
     width: 250px;
 }
