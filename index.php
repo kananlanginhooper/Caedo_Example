@@ -13,7 +13,7 @@ class index extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 
 	public function __construct(){
 		parent::__construct();
-		$this->__JavaScript("/js/showdown.js", false, false);
+		$this->__JavaScript("js/showdown.js", false, false);
 	}
 	
 	// this __destruct function can be removed
