@@ -16,10 +16,10 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 <meta name="author" content="">
 
 <!-- Bootstrap Core CSS -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/css/simple-sidebar.css" rel="stylesheet">
+<link href="css/simple-sidebar.css" rel="stylesheet">
 
 
 <style>
@@ -57,13 +57,13 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 	<!-- Sidebar -->
 	<div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
-			<li class="sidebar-brand"><a href="/">CAEDO Framework</a></li>
-			<li><a href="/HelloWorld.php" target="_blank">Hello World</a></li>
-			<li><a href="/HelloWorld_01.php">Hello World Learning Path</a></li>
-			<li><a href="/TopicPages/BasicVersion.php">Basic Version</a></li>
-			<li><a href="/TopicPages/Configuration.php">Site Configuration</a></li>
-			<li><a href="/TopicPages/Database.php">Database</a></li>
-			<li><a href="/TopicPages/Login.php">Login Demo</a></li>
+			<li class="sidebar-brand"><a href="index.php">CAEDO Framework</a></li>
+			<li><a href="HelloWorld.php" target="_blank">Hello World</a></li>
+			<li><a href="HelloWorld_01.php">Hello World Learning Path</a></li>
+			<li><a href="TopicPages/BasicVersion.php">Basic Version</a></li>
+			<li><a href="TopicPages/Configuration.php">Site Configuration</a></li>
+			<li><a href="TopicPages/Database.php">Database</a></li>
+			<li><a href="TopicPages/Login.php">Login Demo</a></li>
 		</ul>
 	</div>
 	<!-- /#sidebar-wrapper -->
