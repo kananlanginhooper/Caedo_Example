@@ -22,9 +22,11 @@ class HelloWorld_10 extends HelloWorldPageTemplate4 {
 			pages, I am choosing to redirect on the last page and send you to the
 			first topic page. From there you can choose where to go.</p>
 
+		<p>You will be redirected in 10 seconds.</p>
+
 <?php
 		
-		Redirect('/TopicPages/BasicVersion.php', true);
+		AutoRefresh('../HelloWorld_01.php');
 		
 		?>
 
