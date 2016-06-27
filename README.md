@@ -49,7 +49,7 @@ Here is what the index.php file could (and does) look like:
 ```
 <?php
 
-require_once "../__CAEDO.php";
+require_once "##CAEDO.inc";
 
 class index extends BasePage {
 	
@@ -69,7 +69,7 @@ This file is included in the root of the example project as HelloWorld.php
 ```
 <?php
 
-require_once "__CAEDO.inc";
+require_once "##CAEDO.inc";
 
 class HelloWorld extends BasePage {
 
@@ -93,7 +93,7 @@ This file is included in the root of the example project as HelloWorld_01.php
 ```
 <?php
 
-require_once "__CAEDO.inc";
+require_once "##CAEDO.inc";
 
 class HelloWorld_01 extends BasePage {
 
@@ -124,7 +124,7 @@ $ThisPage = new HelloWorld_01();
 ```
 <?php
 
-require_once "__CAEDO.inc";
+require_once "##CAEDO.inc";
 
 class HelloWorld_02 extends BasePage {
 

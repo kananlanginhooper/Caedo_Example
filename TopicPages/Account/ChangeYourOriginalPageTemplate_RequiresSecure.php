@@ -1,6 +1,6 @@
 <?php
 
-require_once "../../__CAEDO.inc";
+require_once "../../##CAEDO.inc";
 
 class ChangeYourOriginalPageTemplate_RequiresSecure extends PT_IronSummitMedia_startbootstrap_simple_sidebar__WithOptionalSecurityClone {
 	

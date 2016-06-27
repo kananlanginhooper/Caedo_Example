@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.inc";
+require_once "../##CAEDO.inc";
 
 class HelloWorld_07 extends HelloWorldPageTemplate2 {
 
@@ -40,7 +40,7 @@ class HelloWorld_07 extends HelloWorldPageTemplate2 {
 <p>Generally you don't need to do anything with the '__STATIC_INCLUDES' file. It has been added to .gitignore, so it should not be commited to your repository, and you should not upload it to a server. The file will be recreated automaticly with correct paths. Correct paths can become incorect over time. I mentioned about that you could move the 'HelloWorldPageTemplate2' page template and auto loading will find the file. That is 100% correct, the problem is we have cached the location of where that file used to be in the static include file for this page. So when we move it, we are trying to include a class from a location where it no longer exists. Not great. This can also happen depending on how you are editing your source code. I sometimes use dropbox to sync my files between computers. It saves me from having to commit and push then clone back down from a server. I put my code in dropbox, and it just works, and I can pickup where I left off. BUT, it just so happens the my dropbox
 	folder is not in the same place on every computer I access the code from. This means the the cached locations saved in static includes are not correct on every computer. To fix this:</p>
 
-<p>Delete the '__STATIC_INCLUDES' folder.</p>
+<p><b>Delete the '__STATIC_INCLUDES' folder.</b></p>
 
 <p>Yep, delete it. You can delete the contents, but just delete the whole folder, it doesn't matter. Caedo will recreate it on the next page load and start rebuilding the cache.</p>
 

@@ -3,6 +3,7 @@
 // don't really have to instantiate, no constructor
 // $SiteConfigs = new clsSiteConfigs();
 
+/////////////////////////////// $Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats
 $SiteConfig = new clsSiteConfig('localhost', 'default', '', true, 'caedo', false, '', false, '', 'file', '/tmp', true, true, true);
 clsSiteConfigs::AddSiteConfig($SiteConfig);
 

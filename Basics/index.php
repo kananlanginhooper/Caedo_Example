@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.php";
+require_once "../--CAEDO.php";
 
 class index extends DefaultPageTemplate {
 
