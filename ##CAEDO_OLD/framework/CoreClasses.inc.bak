@@ -576,12 +576,12 @@ class Site {
 class clsDatabaseConnections {
 	private static $arrConnections = array();
 
-	public static function AddConnection($Env, $UserName, $Password, $HostURL, $ReadOnly){
+	public static function AddConnection($Env, $UserName, $Password, $HostURL, $ReadOnly, $DateVersioned){
 		if(!$ReadOnly) {
-			self::$arrConnections[$Env][0] = new clsDatabaseConnection($UserName, $Password, $HostURL, false);
+			self::$arrConnections[$Env][0] = new clsDatabaseConnection($UserName, $Password, $HostURL, false, $DateVersioned);
 		}
 		else {
-			self::$arrConnections[$Env][] = new clsDatabaseConnection($UserName, $Password, $HostURL, true);
+			self::$arrConnections[$Env][] = new clsDatabaseConnection($UserName, $Password, $HostURL, true, $DateVersioned);
 		}
 	}
 
@@ -616,13 +616,14 @@ class clsDatabaseConnections {
 }
 
 class clsDatabaseConnection {
-	public $UserName, $Password, $HostURL, $ReadOnly;
+	public $UserName, $Password, $HostURL, $ReadOnly, $DateVersioned;
 
-	public function __construct($UserName, $Password, $HostURL, $ReadOnly){
+	public function __construct($UserName, $Password, $HostURL, $ReadOnly, $DateVersioned){
 		$this->UserName = $UserName;
 		$this->Password = $Password;
 		$this->HostURL = $HostURL;
 		$this->ReadOnly = $ReadOnly;
+		$this->DateVersioned = $DateVersioned;
 	}
 }
 

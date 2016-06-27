@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.inc";
+require_once "../##CAEDO.inc";
 
 class HelloWorld_06 extends HelloWorldPageTemplate2 {
 
@@ -37,16 +37,14 @@ class HelloWorld_06 extends HelloWorldPageTemplate2 {
 
 <p>So this page template is not part of the framework core code. Actually there are no page templates included with the framework by default. Only the BasePage is included with the framework</p>
 
-<p>Since we're here, it's imporant to talk about the other directories created in the root of your web folder, all required directories start with '__', this is to make a clear distiction what is needed for the framework, vs what you are using for your code. There are two other folders, they are '__CAEDO_CONFIG' and '__STATIC_INCLUDES'.</p>
+<p>Since we're here, it's imporant to talk about the other directories created in the root of your web folder, all required directories that should be changed by the developer start with '__'.  It is also important to note, that all directories that contain files needed by the framework start with '##'. These should NOT be edited  There are also a few files that start with '##', these should NOT be edited either.  All other folders are optional.  We have added the prefixes to make a clear distiction between the types of files and directories that are included with this project.</p>
 
-<p>'__CAEDO_CONFIG' contains config files. We'll get into that at a later time.</p>
-
-<p>The other directory is '__STATIC_INCLUDES'. This folder has to do with AutoLoading. As you may have thought, autoloading classes is time consuming and expensive in terms of computing power. What we do to counter this, is caedo saves the location of the class files that it found during the auto load process. It saves them into a formated include file in the '__STATIC_INCLUDES' folder. Every page file that has been run should have a matching file in the '__STATIC_INCLUDES' directory. The matching static include for this page file is '__STATIC_INCLUDES/HelloWorld/HelloWorld_06.php.inc'. Notice that '.inc' is added on the end of the file name, this is to prevent the file from be executed.</p>
+<p>There is an directory when it comes to autoloading, and that is '__STATIC_INCLUDES'. This folder has to do with AutoLoading. As you may have thought, autoloading classes is time consuming and expensive in terms of computing power. What we do to counter this, is caedo saves the location of the class files that it found during the auto load process. It saves them into a formated include file in the '__STATIC_INCLUDES' folder. Every page file that has been run should have a matching file in the '__STATIC_INCLUDES' directory. The matching static include for this page file is '__STATIC_INCLUDES/HelloWorld/HelloWorld_06.php.inc'. Notice that '.inc' is added on the end of the file name, this is to prevent the file from be executed.</p>
 
 <p>Generally you don't need to do anything with the '__STATIC_INCLUDES' file. It has been added to .gitignore, so it should not be commited to your repository, and you should not upload it to a server. The file will be recreated automaticly with correct paths. Correct paths can become incorect over time. I mentioned about that you could move the 'HelloWorldPageTemplate2' page template and auto loading will find the file. That is 100% correct, the problem is we have cached the location of where that file used to be in the static include file for this page. So when we move it, we are trying to include a class from a location where it no longer exists. Not great. This can also happen depending on how you are editing your source code. I sometimes use dropbox to sync my files between computers. It saves me from having to commit and push then clone back down from a server. I put my code in dropbox, and it just works, and I can pickup where I left off. BUT, it just so happens the my dropbox
 	folder is not in the same place on every computer I access the code from. This means the the cached locations saved in static includes are not correct on every computer. To fix this:</p>
 
-<p>Delete the '__STATIC_INCLUDES' folder.</p>
+<p><b>Delete the '__STATIC_INCLUDES' folder.</b></p>
 
 <p>Yep, delete it. You can delete the contents, but just delete the whole folder, it doesn't matter. Caedo will recreate it on the next page load and start rebuilding the cache.</p>
 

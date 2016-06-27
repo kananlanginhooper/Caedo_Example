@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.inc";
+require_once "../##CAEDO.inc";
 
 class Login extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 	
@@ -246,10 +246,10 @@ label {
 					that in many cases the security implemented over stripes the actual
 					security need. This leads to extra code that needs to be maintained
 					at best, and both a bad user experience and a less secure site at
-					worst.<br /> <small>Yep. Less secure. Do you want people to write
+					worst.<br /> <small>-- Yep. Less secure. Do you want people to write
 						their password on a sticky note on their monitor? Just make them
 						change their password every week. I guarantee it'll happen.
-						Tightening security can reduce your security effectiveness.</small>
+						Tightening security can reduce your security effectiveness. --</small>
 				</p>
 
 				<p>Please look at the code of this page, it has notes as to what
@@ -264,12 +264,10 @@ label {
 					making your life complicated for no added security <br />How often
 					are passwords changed? If this is a small site, they may never be
 					changed. Do you really need to allow users to change their own
-					password? Are you the user? <br />What about salting and hashing?
+					password? Are you the only user? <br />What about salting and hashing?
 					"How could you <u>POSSIBLY</u> not salt and hash your
-					passwords?!?!?!" Calm it down scooter. How many people are logging
-					in here? 1 or 1 million? <br />Saying that there is a one size fits
-					all methodology for security is ludicrous. Is this a cat forum or a
-					banking site. Are you really saying the security plan should be the
+					passwords?!?!?!" Calm it down scooter....and feel free to salt and hash if you feel that best suits your needs.<br />Saying that there is a one size fits
+					all methodology for security is ludicrous. Is this a financial website or is this a website dedicated to your pet lizard? Are you really saying the security plan should be the
 					same for both? <br /> <br />So, need more?
 				
 				
@@ -280,10 +278,10 @@ label {
 						the source</li>
 					<li>You can check cookies and IP address against prior logins</li>
 					<li>You can check prior login fails, and black list IP addresses,
-						or lock account</li>
+						or lock accounts</li>
 					<li>You can connect to a key store such as AWS IAM.</li>
 					<li>You can impliment two-factor authenication here. Email based is
-						easy to roll your own, use twilio to send a text</li>
+						easy to roll your own, or use twilio to send a text</li>
 					<li>It's all up to you, think about what you really need.</li>
 				</ul>
 				<br /> <br />I suggest checking forks of this project and check back

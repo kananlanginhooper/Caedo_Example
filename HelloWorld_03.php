@@ -1,6 +1,6 @@
 <?php
 
-require_once "__CAEDO.inc";
+require_once "##CAEDO.inc";
 
 class HelloWorld_03 extends EmptyPageTemplate {
 

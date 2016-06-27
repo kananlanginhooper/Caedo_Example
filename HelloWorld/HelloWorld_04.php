@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.inc";
+require_once "../##CAEDO.inc";
 
 class HelloWorld_04 extends AlmostEmptyPageTemplate {
 
@@ -18,11 +18,11 @@ class HelloWorld_04 extends AlmostEmptyPageTemplate {
 		print "<p>In order to get us here, a few things had to change.  For one, the first command of each page file is to load the framework.  Since we're in a directory, the relative location of that file has changed, and hence we have updated the line from:</p>";
 		
 ?>
-<pre>require_once "__CAEDO.inc";</pre>
+<pre>require_once "##CAEDO.inc";</pre>
 
 <p>to:</p>
 
-<pre>require_once "../__CAEDO.inc";</pre>
+<pre>require_once "../##CAEDO.inc";</pre>
 <?php 
 
 		print "<p>I have also updated the page template from 'EmptyPageTemplate' to 'AlmostEmptyPageTemplate'.</p>";
@@ -46,7 +46,6 @@ class AlmostEmptyPageTemplate extends BasePage {
 	}
 
 }
-
 
 </pre>
 

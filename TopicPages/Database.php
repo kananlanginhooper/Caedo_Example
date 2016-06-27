@@ -1,6 +1,6 @@
 <?php
 
-require_once "../__CAEDO.inc";
+require_once "../##CAEDO.inc";
 
 class Database extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 
@@ -56,8 +56,8 @@ class Database extends PT_IronSummitMedia_startbootstrap_simple_sidebar {
 			wrong database while running a homework assignment are on a different
 			level then doing that in a business situation where there are jobs
 			and real money sitting on the other side of that data. One simple
-			mistake like deleting or altering production data can end carears and
-			cost companies significan money.</p>
+			mistake like deleting or altering production data can end careers and
+			cost companies significant money.</p>
 
 
 		<p>I am a strong advocate of making the right thing to do, the easiest
