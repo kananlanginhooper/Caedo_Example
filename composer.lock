@@ -4,26 +4,27 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "43da54450822aba00e7f91cea4d00cb4",
+    "hash": "14ff0b88360910417eb5f8100366b12e",
     "packages": [
         {
             "name": "caedo/framework",
-            "version": "1.0.2",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kananlanginhooper/Caedo.git",
-                "reference": "02175637bebf72e02939c05179bcf630fe846d26"
+                "reference": "681c735a0081270b58520fe7f1659a675137b5f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kananlanginhooper/Caedo/zipball/02175637bebf72e02939c05179bcf630fe846d26",
-                "reference": "02175637bebf72e02939c05179bcf630fe846d26",
+                "url": "https://api.github.com/repos/kananlanginhooper/Caedo/zipball/681c735a0081270b58520fe7f1659a675137b5f4",
+                "reference": "681c735a0081270b58520fe7f1659a675137b5f4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv2"
             ],
@@ -39,15 +40,11 @@
             "homepage": "https://github.com/kananlanginhooper/Caedo",
             "keywords": [
                 "Caedo",
-                "DevOps",
                 "Developer First",
-                "PHP Framework"
+                "devops",
+                "php framework"
             ],
-            "support": {
-                "source": "https://github.com/kananlanginhooper/Caedo/tree/1.0.2",
-                "issues": "https://github.com/kananlanginhooper/Caedo/issues"
-            },
-            "time": "2016-06-27 17:35:34"
+            "time": "2016-07-05 17:59:32"
         }
     ],
     "packages-dev": [],
