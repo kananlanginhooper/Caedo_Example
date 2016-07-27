@@ -61,6 +61,7 @@ class PT_IronSummitMedia_startbootstrap_simple_sidebar extends BasePage {
 			<li><a href="/HelloWorld.php" target="_blank">Hello World</a></li>
 			<li><a href="/HelloWorld_01.php">Hello World Learning Path</a></li>
 			<li><a href="/TopicPages/BasicVersion.php">Basic Version</a></li>
+			<li><a href="/TopicPages/ExtraFunctions.php">Extra Functions</a></li>
 			<li><a href="/TopicPages/Configuration.php">Site Configuration</a></li>
 			<li><a href="/TopicPages/Database.php">Database</a></li>
 			<li><a href="/TopicPages/Login.php">Login Demo</a></li>
