@@ -100,6 +100,35 @@ else {
 	Site::$RootFolder = $RootFolder;
 	Site::$CaedoConfigFolder = $RootFolder . '__CAEDO_CONFIG/';
 	Site::$CaedoRootFolder = $CaedoRootFolder;
+
+	function UncaughtExceptionHandler($exception){
+		xdebug_break();
+		xdebug_break();
+		xdebug_break();
+		error_log("Internal Error: " . $exception->getMessage() . ' | ' . $exception->getFile() . ":" . $exception->getLine() . ' | ' . $exception->getTraceAsString());
+		
+		if(isset(Site::$IsLocal) && Site::$IsLocal) {
+			echo "<h1>Internal Error: ", $exception->getMessage(), "</h1>\n";
+			echo $exception->getFile() . ":" . $exception->getLine() . " <br />\n";
+			$arrTrace = $exception->getTrace();
+			if($arrTrace) {
+				foreach($arrTrace as $TraceLine) {
+					$args = '';
+					if($TraceLine['args']) {
+						$args = implode(', ', $TraceLine['args']);
+					}
+					echo "{$TraceLine['file']}:{$TraceLine['line']} &nbsp; {$TraceLine['function']}($args) <br />\n";
+				}
+			}
+		}
+		else {
+			echo "<h1>Internal Error</h1>\n";
+			echo "This error has been logged and will be investigated\n";
+			exit();
+		}
+	}
+	
+	set_exception_handler('UncaughtExceptionHandler');
 	
 	//
 	//
@@ -288,40 +317,53 @@ else {
 	
 	// need to add URL redirect Authentication
 	
+	session_start();
+	
 	if($SiteConfig) {
 		Site::setSite($SiteConfig);
 		$siteFound = true;
+		// session_start();
 	}
 	
 	// this is for direct calls to the server via IP address.
 	// This is useful as a hack when using clustered servers. I have a few very specific pages that require websockets to run fast enough.
 	// Once the socket server is started, I need to be sure that I am connecting to the server that is hosting that socket, and not just any server in the cluster.
 	// For now, the websocket program itself authenticates the user, but we need to add code here, perhaps built on the session to verify that this user can indeed request that server config
-	elseif(isset($_GET['Url']) && $_GET['Url'] && $SiteConfig && Site::$AllowURLOverride) {
+	elseif(isset($_GET['Url']) && $_GET['Url']) {
 		
 		// if(strtolower($_SERVER["HTTP_HOST"]) != 'localhost') session_save_path('/tmp');
 		// we need to start the session, there could be session data that is important.
-		session_start();
-		
 		$SiteConfig = clsSiteConfigs::GetSiteConfig($_GET['Url']);
-		if($SiteConfig) {
+		
+		if($SiteConfig && $SiteConfig->AllowURLOverride) {
 			Site::setSite($SiteConfig);
-			$_SESSION['Url'] = strtolower($_GET['Url']);
 			$siteFound = true;
+			// session_start();
+			$_SESSION['Url'] = strtolower($_GET['Url']);
 		}
 	}
 	// this is for repeated calls to the server via IP address.
-	elseif(isset($_SESSION['Url']) && $_SESSION['Url'] && $SiteConfig && Site::$AllowURLOverride) {
+	elseif(isset($_SESSION['Url']) && $_SESSION['Url']) {
 		
 		// if(strtolower($_SERVER["HTTP_HOST"]) != 'localhost') session_save_path('/tmp');
 		// we need to start the session, there could be session data that is important.
-		session_start();
 		
 		$SiteConfig = clsSiteConfigs::GetSiteConfig($_SESSION['Url']);
+		
+		if($SiteConfig && $SiteConfig->AllowURLOverride) {
+			Site::setSite($SiteConfig);
+			$siteFound = true;
+		}
+	}
+	// if we don't have a URL match, and no parameter, load the default site if one is set
+	else {
+		
+		$SiteConfig = clsSiteConfigs::GetDefaultSiteConfig();
+		
 		if($SiteConfig) {
 			Site::setSite($SiteConfig);
-			$_SESSION['Url'] = strtolower($_GET['Url']);
 			$siteFound = true;
+			// session_start();
 		}
 	}
 	
@@ -366,7 +408,7 @@ else {
 	else {
 
 		function session_active(){
-			return (session_status() == PHP_SESSION_ACTIVE);
+			return (session_status() === PHP_SESSION_ACTIVE);
 		}
 	}
 	
@@ -476,9 +518,11 @@ else {
 		}
 	}
 
-	function sql_query_or_die($DieMessage){
+	function sql_query_or_die($SQL, $DieMessage){
 		xdebug_break();
-		die($DieMessage);
+		xdebug_break();
+		xdebug_break();
+		throw new Exception("$DieMessage | SQL: $SQL");
 	}
 
 	function sql_query($SQL, $unbuffered = false){
@@ -521,7 +565,8 @@ else {
 			else {
 				$mysqli = DB::$mysqli_write;
 			}
-			$res = $mysqli->query($SQL);
+			
+			$res = $mysqli->query($SQL) or sql_query_or_die($SQL, $mysqli->error);
 			if(isset($_GET) && isset($_GET['Debug'])) LogPassThroughError($SQL); // log if ?Debug is set
 			                                                                     
 			// }
@@ -807,6 +852,17 @@ else {
 			return false;
 		}
 	}
+
+	function sql_error(){
+		if(DB::$dbh) {
+			return DB::$mysqli_write->error;
+		}
+		else {
+			LogPassThroughError("SQL ERROR sql_error");
+			return false;
+		}
+	}
+	
 	// ----------------------------- mysqli, new DB connection
 	
 	// save for later, Server Identity, eg
@@ -836,6 +892,7 @@ else {
 					$Error = 'Could not connect. Error #3382';
 				}
 				else {
+					DB::$mysqli_write->query("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED");
 					DB::$dbh = true;
 					Site::$HasDatabase = true;
 				}
