@@ -16,3 +16,10 @@ $db_username = "root"; // Your database login username
 $db_password = ""; // Your database login password
 $db_host = "localhost"; // localhost database server for installs like WAMP, XAMPP and MYSQL running on test servers
 clsDatabaseConnections::AddConnection('local', $db_username, $db_password, $db_host, false, false);
+
+/////////////////////////////// $Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats
+
+$Env = '';
+$WriteDatabase = '';
+$SiteConfig = new clsSiteConfig('localhost', 'default', $Env, true, $WriteDatabase, false, '', false, '', 'file', '/tmp', false, true, true);
+clsSiteConfigs::AddSiteConfig($SiteConfig);
