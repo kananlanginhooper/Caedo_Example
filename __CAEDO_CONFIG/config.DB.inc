@@ -42,9 +42,9 @@ $CDNDataHost = ''; // Add amazon url like //amazonaws.amazonaws.com
 $CDNBucket = ''; // Add S3 bucket name like serverbucketupload
 // Set database name like NameOfTheDBWeAreGoingToUseInOurAplication => DatabaseName
 $WriteDatabase = array(
-					'default' => 'TestDB_1', // First key should always be "default" // Database Name like "TestDB_1"
-					$db_alias_second => 'TestDB_2', //  // Database Name like "TestDB_2"
-					$db_alias_third => 'TestDB_3' //  // Database Name like "TestDB_3"
+					'default' => '', // First key should always be "default" // Database Name like "TestDB_1"
+					$db_alias_second => '', //  // Database Name like "TestDB_2"
+					$db_alias_third => '' //  // Database Name like "TestDB_3"
 				); 
 // Primary database key should be default then you can add whatever name you want for your alternative databases
 $SiteConfig = new clsSiteConfig('localhost', 'default', $Env, true, $WriteDatabase, false, '', false, '', 'file', '/tmp', false, true, true);
