@@ -3,6 +3,7 @@ if(isset($DontLoadCAEDO) && $DontLoadCAEDO) {
 	// do nothing, the old framework is being loaded
 }
 else {
+
 	// I'm listing BasePage first in this file, because it will be the most often looked at class in here, you may have to step through parts of it to render you page, having it at the top makes it easy to find
 	class BasePage {
 		
@@ -11,12 +12,13 @@ else {
 		protected $__CaedoRootFolder;
 		
 		// Setup
-		protected $__PageType = 'HTML5'; // Options HTML5, HTML, JSON, RAW -- These are validated in __destruct
-		                                 
+		protected $__PageType = 'HTML5'; // Options HTML5, HTML, JSON, RAW, Progressive -- These are validated in __destruct
+		public static $__PageMode = 'LIVE'; // Options LIVE, Test, Beta, etc -- These are not validated, these are for developer use when choosing DB connections, when sending emails, and calling outside APIs. Use as it best suits the team.
+		                                    
 		// Before Body Tag
 		private $__arrHTMLHead = array();
 		protected $__PageTitle = '';
-		private $__arrCSS_Early = array();
+		protected $__arrCSS_Early = array();
 		
 		// - Early Javascript
 		private $__HasJavaScript_Early_Been_Processed = false;
@@ -39,6 +41,7 @@ else {
 		
 		// Tidy Comment
 		protected $__TidyHTMLComment = '<!-- Framework will Insert Tidy Message Here - This tag will be replaced with the Tidy HTML messages and Stats on Memory usage and Run time - DO NOT EDIT THIS COMMENT -->';
+		protected $__PageHTML = '';
 		
 		// Other varables
 		private $__ViewData;
@@ -57,8 +60,8 @@ else {
 			$this->__AddGeneralFunctionSets();
 			
 			// we're autoloading jquery, and making it a dependency of the framework. I think it will be used in most
-			$this->__JavaScript("//code.jquery.com/jquery-2.1.3.min.js", false, true, 1000);
-			
+			$this->__JavaScript("//code.jquery.com/jquery-2.1.3.min.js", false, true, 9999); // use numbers less than 9999
+			                                                                                 
 			// Save Site globals from Caedo.inc
 			$this->__RootFolder = Site::$RootFolder;
 			$this->__CaedoRootFolder = Site::$CaedoRootFolder;
@@ -96,7 +99,7 @@ else {
 		private function __CSS(){
 			if(isset($this->__arrCSS_Early) && is_array($this->__arrCSS_Early)) {
 				foreach($this->__arrCSS_Early as $CSSLine) {
-					print '  ' . $CSSLine . "\n";
+					print "<link rel='stylesheet' href='{$CSSLine}'>\n";
 				}
 			}
 		}
@@ -246,7 +249,7 @@ else {
 				}
 			}
 		}
-		
+
 		// This is where the output comes from. After all other code has run, this will triger and output the page.
 		
 		// NOTICE:
@@ -277,6 +280,7 @@ else {
 				case 'HTML' :
 				case 'JSON' :
 				case 'RAW' :
+				case 'PROGRESSIVE' :
 					// OK
 					break;
 				default :
@@ -308,6 +312,18 @@ else {
 				
 				// OUTPUT
 				echo $PageData; // This is the main print of all of the HTML code, if not using tidy
+			
+			}
+			elseif($this->__PageType == 'PROGRESSIVE') {
+				// you use these for long loading pages. Here are some use cases:
+				// pages that will run over 60 seconds
+				
+				// Tidy is also not run, in any cases, and errors are not displayed, even in test environments
+				// the HTML of the page will not be available in distruct
+				
+				// Get MainView function
+				$MainView = $this->MainView;
+				$this->$MainView();
 			
 			}
 			else {
@@ -359,7 +375,7 @@ else {
 				$PageEND = $this->__PrintCapture_EndReturn();
 				
 				// collect the three sections
-				$PageHTML = $PageHEAD . $PageBODY . $PageEND;
+				$this->__PageHTML = $PageHEAD . $PageBODY . $PageEND;
 				
 				if(isset(Site::$TidyUp) && Site::$TidyUp) {
 					
@@ -375,45 +391,45 @@ else {
 								'new-blocklevel-tags' => 'audio, source' 
 						);
 						
-						$tidy->parseString($PageHTML, $tidy_config, 'utf8');
+						$tidy->parseString($this->__PageHTML, $tidy_config, 'utf8');
 						$tidy->cleanRepair();
 						
 						// Get the Tidy Message, then change the page source that is now nicely formatted, and add the Tidy Message
-						$PageHTMLAfterTidy = $tidy->value;
+						$this->__PageHTMLAfterTidy = $tidy->value;
 					}
 					else {
 						// tidy not enabled
-						$PageHTMLAfterTidy = $PageHTML;
+						$this->__PageHTMLAfterTidy = $this->__PageHTML;
 					}
 					
 					// check and see if there is a Replacement tag. If the tag is edited here or in a page class, it will be an issue.
-					if(strpos($PageHTMLAfterTidy, $this->__TidyHTMLComment)) {
+					if(strpos($this->__PageHTMLAfterTidy, $this->__TidyHTMLComment)) {
 						
-						$TidyMessage = $this->__ReturnHTMLErrorsForLocalhost($PageHTMLAfterTidy);
+						$TidyMessage = $this->__ReturnHTMLErrorsForLocalhost($this->__PageHTMLAfterTidy);
 						
-						$PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $PageHTMLAfterTidy);
+						$this->__PageHTML = str_replace($this->__TidyHTMLComment, $TidyMessage, $this->__PageHTMLAfterTidy);
 					}
 					else {
-						$PageHTML = $PageHTMLAfterTidy;
+						$this->__PageHTML = $this->__PageHTMLAfterTidy;
 					}
 					
 					if($this->__PageType == 'HTML5') {
 						// remove doctype if there is one
-						$PageHTML = preg_replace("/<!DOCTYPE((.|\n|\r)*?)\">/", "", $PageHTML);
+						$this->__PageHTML = preg_replace("/<!DOCTYPE((.|\n|\r)*?)\">/", "", $this->__PageHTML);
 						
 						// also remove HTML crap it can sometimes add
-						$PageHTML = preg_replace("/<html((.|\n|\r)*?)\">/", "", $PageHTML);
+						$this->__PageHTML = preg_replace("/<html((.|\n|\r)*?)\">/", "", $this->__PageHTML);
 						
 						// OUTPUT
 						$this->__DOCTYPE(); // DOCTYPE is removed or messed up by tidy
 					}
 					
 					echo "\n<html>\n";
-					echo $PageHTML; // This is the main print of all of the HTML code
+					echo $this->__PageHTML; // This is the main print of all of the HTML code
 				}
 				else {
 					// OUTPUT
-					echo $PageHTML; // This is the main print of all of the HTML code, if not using tidy
+					echo $this->__PageHTML; // This is the main print of all of the HTML code, if not using tidy
 				}
 			}
 			
@@ -481,9 +497,9 @@ else {
 		}
 
 		protected function BODY(){
-		
+			print "<body>";
 		}
-		
+
 		//
 		//
 		//
@@ -574,7 +590,7 @@ else {
 			
 			return $ret;
 		}
-		
+
 		// -------------- Print Capture Tool
 		
 		protected function __PrintCapture_Start(){
@@ -587,7 +603,7 @@ else {
 			// return what we just captured
 			return $JustCaptured_OutputBuffer;
 		}
-		
+
 		// -------------- Print Capture Tool
 		
 		// --------------- Utility Functions
@@ -599,7 +615,7 @@ else {
 		// --------------- Utility Functions
 	
 	}
-	
+
 	//
 	//
 	//
@@ -620,11 +636,15 @@ else {
 		static $CDN, $scriptAddress, $CDNDataAddress, $CDNDataBucket;
 		
 		// from SiteConfig
-		static $IsLocal, $IsSecure, $Http_Host, $Http_Port, $PathToHttp, $pathToSsl;
+		static $IsLocal, $IsSecure, $Http_Host, $Http_Port, $PathToHttp, $PathToSsl;
 		
 		static $Url;
 		static $Site;
 		static $Env;
+		static $Server;
+		static $EnvServer;
+		
+		static $Profile;
 		
 		// URL (Site) overriding
 		static $AllowURLOverride, $URLOverridePassKey;
@@ -637,6 +657,9 @@ else {
 		
 		// Database
 		static $ShouldHaveDatabase, $HasDatabase, $WriteDatabase, $HasReadReplica, $ReadDatabase;
+		
+		// CDN
+		static $CDNDataHost, $CDNBucket;
 
 		static function setSite(clsSiteConfig $clsSiteConfig){
 			
@@ -647,6 +670,9 @@ else {
 			Site::$Url = $clsSiteConfig->Url;
 			Site::$Site = $clsSiteConfig->Site;
 			Site::$Env = $clsSiteConfig->Env;
+			
+			Site::$EnvServer = $clsSiteConfig->Env . '_' . $clsSiteConfig->Url;
+			
 			Site::$IsLocal = $clsSiteConfig->IsLocal;
 			Site::$WriteDatabase = $clsSiteConfig->WriteDatabase;
 			Site::$HasReadReplica = $clsSiteConfig->HasReadReplica;
@@ -662,7 +688,9 @@ else {
 			Site::$Http_Host = $clsSiteConfig->Http_Host;
 			Site::$Http_Port = $clsSiteConfig->Http_Port;
 			Site::$PathToHttp = $clsSiteConfig->PathToHttp;
-			Site::$pathToSsl = $clsSiteConfig->pathToSsl;
+			Site::$PathToSsl = $clsSiteConfig->PathToSsl;
+			Site::$CDNDataHost = $clsSiteConfig->CDNDataHost;
+			Site::$CDNBucket = $clsSiteConfig->CDNBucket;
 		
 		}
 	}
@@ -670,30 +698,66 @@ else {
 	class clsDatabaseConnections {
 		private static $arrConnections = array();
 
-		public static function AddConnection($Env, $UserName, $Password, $HostURL, $ReadOnly, $DateVersioned){
+		public static function AddConnection($Env, $UserName, $Password, $HostURL, $DatabaseAlias, $ReadOnly, $DateVersioned){
 			if(!$ReadOnly) {
-				self::$arrConnections[$Env][0] = new clsDatabaseConnection($UserName, $Password, $HostURL, false, $DateVersioned);
+				if(!isset(self::$arrConnections[$Env]) && empty(self::$arrConnections[$Env])){
+					$DatabaseAlias = 'default';
+				}else if(isset(self::$arrConnections[$Env]) && count(self::$arrConnections[$Env]) == 1 && $DatabaseAlias == ''){
+					$DatabaseAlias = 'default';
+				}
+				self::$arrConnections[$Env][$DatabaseAlias] = new clsDatabaseConnection($UserName, $Password, $HostURL, false, $DateVersioned);					
+				// self::$arrConnections[$Env][0] = new clsDatabaseConnection($UserName, $Password, $HostURL, false, $DateVersioned);
 			}
 			else {
-				self::$arrConnections[$Env][] = new clsDatabaseConnection($UserName, $Password, $HostURL, true, $DateVersioned);
+				if(!isset(self::$arrConnections[$Env]) && empty(self::$arrConnections[$Env])){
+					$DatabaseAlias = 'default';
+				}
+				// if(!empty($DatabaseAlias)){
+					self::$arrConnections[$Env][$DatabaseAlias] = new clsDatabaseConnection($UserName, $Password, $HostURL, false, $DateVersioned);
+				// }else{					
+					// self::$arrConnections[$Env]['default'] = new clsDatabaseConnection($UserName, $Password, $HostURL, true, $DateVersioned);
+				// }
+				// self::$arrConnections[$Env][] = new clsDatabaseConnection($UserName, $Password, $HostURL, true, $DateVersioned);
 			}
 		}
 
-		public static function GetConnection($Env, $ReadOnly){
+		public static function GetConnection($Env, $DatabaseAlias='default', $ReadOnly){
 			if(!$ReadOnly) {
-				if(isset(self::$arrConnections[$Env][0])) {
-					return self::$arrConnections[$Env][0];
+				/* if(!empty($DatabaseAlias)){
+					if(isset(self::$arrConnections[$Env][$DatabaseAlias])){
+						return self::$arrConnections[$Env][$DatabaseAlias];
+					}else{
+						return false;
+					}
+					
+				}else{
+					if(isset(self::$arrConnections[$Env]['default'])){
+						return self::$arrConnections[$Env]['default'];
+					}else if(self::$arrConnections[$Env][0]){
+						return self::$arrConnections[$Env][0];
+					}else{
+						return false;
+					}
+				} */
+				if(isset(self::$arrConnections[$Env])) {
+					return self::$arrConnections[$Env];
 				}
 				else {
 					return false;
 				}
 			}
 			else {
-				$Readonlys = count(self::$arrConnections[$Env]) - 1;
+				if(isset(self::$arrConnections[$Env])) {
+					return self::$arrConnections[$Env];
+				}
+				else {
+					return false;
+				}
+				/* $Readonlys = count(self::$arrConnections[$Env]) - 1;
 				$cn = rand(1, $Readonlys);
 				if(isset(self::$arrConnections[$Env][$cn])) {
 					return self::$arrConnections[$Env][$cn];
-				}
+				} */
 			}
 		}
 
@@ -759,10 +823,10 @@ else {
 	}
 
 	class clsSiteConfig {
-		public $Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats;
-		public $IsSecure, $Http_Host, $Http_Port, $PathToHttp, $pathToSsl;
+		public $Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats, $CDNDataHost, $CDNBucket;
+		public $IsSecure, $Http_Host, $Http_Port, $PathToHttp, $PathToSsl;
 
-		public function __construct($Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats){
+		public function __construct($Url, $Site, $Env, $IsLocal, $WriteDatabase, $HasReadReplica, $ReadDatabase, $AllowURLOverride, $URLOverridePassKey, $SessionManager, $SessionManagerPath, $TidyUp, $ShowErrors, $ShowStats, $CDNDataHost='', $CDNBucket=''){
 			$this->Url = strtolower($Url);
 			$this->Site = $Site;
 			$this->Env = $Env;
@@ -784,12 +848,13 @@ else {
 			$this->Http_Host = $arrHttp_Host[0];
 			$this->Http_Port = $arrHttp_Host[1];
 			
-			if($this->Http_Port != 80) {
-				$OptionalPort = ':' . $this->Http_Port;
-			}
-			else {
-				$OptionalPort = '';
-			}
+			// Again, not needed in most cases, port number is reflected in $_SERVER["HTTP_HOST"]
+			// if($this->Http_Port != 80) {
+			// $OptionalPort = ':' . $this->Http_Port;
+			// }
+			// else {
+			$OptionalPort = '';
+			// }
 			
 			// this helps with redirection from secure and back.
 			// It is the recomendation to serve all pages over https, there are cases where you can't
@@ -805,7 +870,7 @@ else {
 				// SSL can be done on localhost, I've just personaly never gotten it totally setup
 				// At some point, someone is going to want this.
 				// Feel free to expand the code to support localhost SSL.
-				$this->pathToSsl = $this->PathToHttp;
+				$this->PathToSsl = $this->PathToHttp;
 			}
 			else {
 				// Again, this is not for localhost, if it was and you were using port based vhosts
@@ -813,7 +878,7 @@ else {
 				// as it stands, we're going to force it to use the browser default of 443
 				// Again, at some point, someone is going to want this.
 				// Feel free to expand the code to support specified port SSL.
-				$this->pathToSsl = 'https://' . strtolower($_SERVER["HTTP_HOST"]) . '/';
+				$this->PathToSsl = 'https://' . strtolower($_SERVER["HTTP_HOST"]) . '/';
 			}
 			
 			$this->WriteDatabase = $WriteDatabase;
@@ -829,6 +894,9 @@ else {
 			$this->TidyUp = $TidyUp;
 			$this->ShowErrors = $ShowErrors;
 			$this->ShowStats = $ShowStats;
+			
+			$this->CDNDataHost = $CDNDataHost;
+			$this->CDNBucket = $CDNBucket;
 		}
 
 		static function ParseHttp_Host($HostToParse = ''){
@@ -839,21 +907,22 @@ else {
 				$HostToParse = strtolower($HostToParse);
 			}
 			
-			if(strpos($HostToParse, ':')) {
-				$arrPath = explode(':', $HostToParse);
-				if(count($arrPath) != 2) {
-					xdebug_break();
-					die('bad HTTP_HOST in clsSiteConfig::ParseHttp_Host.  Host should have either zero or one colons');
-				}
-				// this is a string, we're going to use it as a string way more often than an int
-				// if the future I could see
-				$arrPath[1] = ':' . $arrPath[1];
-			}
-			else {
-				// no port means port 80 or 443, but browsers are smart enough to fill it in, so unless it's an override, leave it blank
-				$arrPath[0] = $_SERVER['HTTP_HOST'];
-				$arrPath[1] = '';
-			}
+			// Need to check into which webserver is running, this is needed by some and not by others? Not sure.
+			// if(strpos($HostToParse, ':')) {
+			// $arrPath = explode(':', $HostToParse);
+			// if(count($arrPath) != 2) {
+			// xdebug_break();
+			// die('bad HTTP_HOST in clsSiteConfig::ParseHttp_Host. Host should have either zero or one colons');
+			// }
+			// // this is a string, we're going to use it as a string way more often than an int
+			// // if the future I could see
+			// $arrPath[1] = ':' . $arrPath[1];
+			// }
+			// else {
+			// no port means port 80 or 443, but browsers are smart enough to fill it in, so unless it's an override, leave it blank
+			$arrPath[0] = $_SERVER['HTTP_HOST'];
+			$arrPath[1] = '';
+			// }
 			return $arrPath;
 		}
 	}
@@ -871,6 +940,7 @@ else {
 
 	class Instance {
 		public static $PublicDNS;
+		public static $PublicIP;
 		public static $InstanceID;
 		public static $InstanceType;
 		public static $LoggingEnabled = false;
@@ -878,14 +948,36 @@ else {
 
 		public function __construct(){
 			// DebugBreak();
-			self::$LoggingEnabled = (self::$SQLDebug_MemcacheStarted && time() < (int)cacheGet('SQLDebug') && (cacheGet('SQLDebug_Session') == 'All' || cacheGet('SQLDebug_Session') == session_id()));
+			// 
+			
+			// need to load in Memcache
+			
+			// $clsMemcache = new clsMemcache(Site::$Env);
+			
+			self::$LoggingEnabled = (self::$SQLDebug_MemcacheStarted && (time() - 1500000000) < (int)cacheGet('SQLDebug') && (cacheGet('SQLDebug_Session') == 'All' || cacheGet('SQLDebug_Session') == session_id()));
 		}
 
 		public static function FindInstanceDetails(){
-			self::$PublicDNS = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname");
-			self::$PublicDNS = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-ipv4");
-			self::$InstanceID = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id");
-			self::$InstanceType = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-type");
+			
+			$client = new GuzzleHttp\Client();
+			
+			// self::$PublicDNS = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-hostname");
+			// self::$PublicDNS = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-ipv4");
+			// self::$InstanceID = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id");
+			// self::$InstanceType = shell_exec("/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-type");
+			
+			$res = $client->request('GET', 'http://169.254.169.254/latest/meta-data/public-hostname');
+			self::$PublicDNS = $res->getBody();
+			
+			$res = $client->request('GET', 'http://169.254.169.254/latest/meta-data/public-ipv4');
+			self::$PublicIP = $res->getBody();
+			
+			$res = $client->request('GET', 'http://169.254.169.254/latest/meta-data/instance-id');
+			self::$InstanceID = $res->getBody();
+			
+			$res = $client->request('GET', 'http://169.254.169.254/latest/meta-data/instance-type');
+			self::$InstanceType = $res->getBody();
+		
 		}
 
 		public static function LoadInstanceDetails($Packed){
